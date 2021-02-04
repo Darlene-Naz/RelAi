@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getSummarizedOutput } from '../../controllers/text.controller';
+import { getSummarizedOutput } from '../../controllers/v1/text.controller';
 
 const textRouter = Router()
 
