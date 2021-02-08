@@ -13,3 +13,16 @@ a:hover {
     background-color: #0a0b18;
     --color: #e1e1e1;
 }
+
+.inputFile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputFile+label {
+    cursor: pointer;
+}
