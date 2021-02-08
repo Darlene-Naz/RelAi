@@ -19,7 +19,7 @@ const WidgetsBrand = ({withCharts})=>{
         leftFooter="feeds"
       >
         <CIcon
-          name="cib-facebook"
+          name="cil-file"
           height="52"
           className="my-4"
         />
