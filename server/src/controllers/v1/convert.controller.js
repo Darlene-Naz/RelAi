@@ -3,17 +3,26 @@ import { spawn } from 'child_process';
 const convertAudioToText = async (req, res) => {
     try {
         const PATH = req.file.path;
-        let python = spawn('python', ['../../scripts/audio_to_text.py', String(PATH)]);
-        let dataToSend;
-        console.log(python);
-        python.stdout.on('data', function (data) {
-            console.log('Pipe data from python script ...');
-            dataToSend = data.toString();
-        });
-        python.on('close', (code) => {
-            console.log(`child process close all stdio with code ${code}`);
-            res.status(200).send({ 'message': dataToSend })
-        });
+        let python = spawn('python3', [ './src/scripts/audio_to_text.py', String(PATH) ]);
+        
+        let data = '';
+        for await (const chunk of python.stdout) {
+            data += chunk;
+        }
+        data = data.replace('\n', '');
+
+        let error = '';
+        for await (const chunk of python.stderr) {
+            error += chunk;
+        }
+
+        if (error !== '') {
+            res.status(200).send({ 'message': data })
+        } else {
+            res.status(500).send({ 'message': 'Error: ' + error })
+        }
+
+
     } catch (err) {
         res.status(500).send({ 'message': 'Error' });
     }
