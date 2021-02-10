@@ -63,6 +63,7 @@ import {
   cilCheckCircle,
   cilCode,
   cilCommentSquare,
+  cilCloudUpload,
   cilCreditCard,
   cilCursor,
   cilCursorMove,
@@ -136,6 +137,7 @@ export const icons = Object.assign({}, {
   logo,
   logoNegative
 }, {
+  cilCloudUpload,
   cilAlignCenter,
   cilAlignLeft,
   cilAlignRight,
