@@ -5,7 +5,7 @@ import { convertAudioToText, convertTextFileToText } from '../../controllers/v1/
 const convertRouter = Router();
 
 convertRouter
-    .route('/audio-to-text')
+    .route('/audiofile-to-text')
     .post(multer.single('file'), convertAudioToText);
 
 convertRouter
