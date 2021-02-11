@@ -4,10 +4,6 @@ import {
   CWidgetDropdown,
   CRow,
   CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
   CForm,
   CLabel,
   CInputFile,
@@ -17,39 +13,50 @@ import {
   CInputGroup,
   CInputGroupText,
   CInputGroupAppend,
-  CButton
+  CButton, CTextarea
 
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import ChartLineSimple from '../charts/ChartLineSimple'
 import ChartBarSimple from '../charts/ChartBarSimple'
 
-const WidgetsDropdown = () => {
+const WidgetsDropdown = (props) => {
   const [ inputData, setInputFile ] = useState({
     textFile: "",
     audioFile: "",
     videoFile: "",
-    plainText: "",
+    plainText: ""
   })
   const [ visible, setVisible ] = useState(0);
 
   function handleChange(e) {
     const { name, files } = e.target;
+    console.log(name)
+    console.log(files)
     setVisible(10);
     setInputFile({ ...inputData, [ name ]: files[ 0 ] })
   }
 
   function handleSubmit(event) {
+    const { name } = event.target
+    console.log(name)
     const file = new FormData();
-    file.append('file', inputData.audioFile);
-    axios.post('http://localhost:8000/api/v1/convert/audio-to-text', file, { headers: { 'content-type': 'multipart/form-data' } }).then(res => {
-      console.log(res)
-    }).catch(e => console.log(e))
+    if (name === "text" || name === "audio" || name === "video") {
+      file.append('file', inputData[ name + "File" ]);
+      axios.post('http://localhost:8000/api/v1/convert/' + name + 'file-to-text', file, { headers: { 'content-type': 'multipart/form-data' } })
+        .then(res => {
+          props.onConvertedData(res.data.message);
+        })
+        .catch(e => console.log(e))
+    } else if (name === "plainText") {
+      axios.post('', file, {}).then(res => {
+        console.log(res)
+      }).catch(e => console.log(e))
+    }
     event.preventDefault();
   }
 
   return (
-
     <CRow>
       <CCol sm="24" lg="12">
         <CAlert
@@ -69,7 +76,7 @@ const WidgetsDropdown = () => {
         </CAlert>
       </CCol>
       <CCol sm="6" lg="3">
-        <CForm onSubmit={handleSubmit} method="post" encType="multipart/form-data">
+        <CForm name="text" onSubmit={handleSubmit} method="post" encType="multipart/form-data">
           <CInputFile
             id="textFile"
             name="textFile"
@@ -82,8 +89,8 @@ const WidgetsDropdown = () => {
             style={{ width: '100%' }}>
             <CWidgetDropdown
               color="gradient-primary"
-              header="Upload File"
-              text="text files only"
+              header="Documents"
+              text="Upload any text file"
               footerSlot={
                 <div className="c-chart-wrapper mt-3 mx-3">
                   <ChartLineSimple
@@ -99,21 +106,22 @@ const WidgetsDropdown = () => {
                     <CInput disabled placeholder={inputData.textFile.name} />
                     <CInputGroupAppend>
                       <CInputGroupText>
-                        <CButton type="submit" name="text" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
                       </CInputGroupText>
                     </CInputGroupAppend>
                   </CInputGroup>
                 </div>
               }
             >
-              <CIcon name="cil-file" className="c-chart-wrapper mt-3 mx-3" />
+              <div className="btn">+📄</div>
+              {/* name="cil-file" className="c-chart-wrapper mt-3 mx-3"  */}
             </CWidgetDropdown>
           </CLabel>
         </CForm>
       </CCol>
 
       <CCol sm="6" lg="3">
-        <CForm action="" method="post" onSubmit={handleSubmit} encType="multipart/form-data">
+        <CForm name="audio" method="post" onSubmit={handleSubmit} encType="multipart/form-data">
           <CInputFile
             id="audioFile"
             name="audioFile"
@@ -124,7 +132,7 @@ const WidgetsDropdown = () => {
             <CWidgetDropdown
               color="gradient-info"
               header="Audio"
-              text=".mp3 , .wav"
+              text="Upload a .mp3 .wav "
               footerSlot={
                 <div className="c-chart-wrapper mt-3 mx-3">
                   <ChartLineSimple
@@ -138,17 +146,17 @@ const WidgetsDropdown = () => {
                   />
                   <CInputGroup
                     className={(inputData.audioFile === "") ? "mb-3 d-none" : "mb-3"}>
-                    <CInput disabled id="name" placeholder={inputData.audioFile.name} />
+                    <CInput disabled placeholder={inputData.audioFile.name} />
                     <CInputGroupAppend>
                       <CInputGroupText>
-                        <CButton type="submit" name="audio" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
                       </CInputGroupText>
                     </CInputGroupAppend>
                   </CInputGroup>
                 </div>
               }
             >
-              <CIcon name="cil-audio-spectrum" className="c-chart-wrapper mt-3 mx-3" />
+              <div className="btn">🎧</div>
               {/* <CDropdown>
             <CDropdownToggle caret={false} color="transparent">
               <CIcon name="cil-location-pin" />
@@ -166,68 +174,111 @@ const WidgetsDropdown = () => {
       </CCol>
 
       <CCol sm="6" lg="3">
-        <CWidgetDropdown
-          color="gradient-warning"
-          header="9.823"
-          text="Members online"
-          footerSlot={
-            <ChartLineSimple
-              className="mt-3"
-              style={{ height: '70px' }}
-              backgroundColor="rgba(255,255,255,.2)"
-              dataPoints={[ 78, 81, 80, 45, 34, 12, 40 ]}
-              options={{ elements: { line: { borderWidth: 2.5 } } }}
-              pointHoverBackgroundColor="warning"
-              label="Members"
-              labels="months"
-            />
-          }
-        >
-          <CDropdown>
-            <CDropdownToggle color="transparent">
-              <CIcon name="cil-settings" />
-            </CDropdownToggle>
-            <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown>
-        </CWidgetDropdown>
+        <CForm name="video" method="post" onSubmit={handleSubmit} encType="multipart/form-data">
+          <CInputFile
+            id="videoFile"
+            name="videoFile"
+            className="inputFile"
+            accept="video/*"
+            onChange={handleChange} />
+          <CLabel htmlFor="videoFile" style={{ width: '100%' }}>
+            <CWidgetDropdown
+              color="gradient-warning"
+              header="Video"
+              text="Upload any meet..."
+              footerSlot={
+                <div className="mt-3">
+
+                  <ChartLineSimple
+                    style={{ height: '70px' }}
+                    backgroundColor="rgba(255,255,255,.2)"
+                    dataPoints={[ 78, 81, 80, 45, 34, 12, 40 ]}
+                    options={{ elements: { line: { borderWidth: 2.5 } } }}
+                    pointHoverBackgroundColor="warning"
+                    label="Members"
+                    labels="months"
+                  />
+                  <CInputGroup
+                    className={(inputData.videoFile === "") ? "c-chart-wrapper mb-3 mx-3 d-none" : "c-chart-wrapper mb-3 mx-3"}>
+                    <CInput disabled id="name" placeholder={inputData.plainText.name} />
+                    <CInputGroupAppend>
+                      <CInputGroupText>
+                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                      </CInputGroupText>
+                    </CInputGroupAppend>
+                  </CInputGroup>
+                </div>
+              }
+            >
+              <div className="btn">🎥</div>
+
+              {/* <CDropdown>
+                <CDropdownToggle color="transparent">
+                  <CIcon name="cil-settings" />
+                </CDropdownToggle>
+                <CDropdownMenu className="pt-0" placement="bottom-end">
+                  <CDropdownItem>Action</CDropdownItem>
+                  <CDropdownItem>Another action</CDropdownItem>
+                  <CDropdownItem>Something else here...</CDropdownItem>
+                  <CDropdownItem disabled>Disabled action</CDropdownItem>
+                </CDropdownMenu>
+              </CDropdown> */}
+            </CWidgetDropdown>
+          </CLabel>
+        </CForm>
       </CCol>
 
       <CCol sm="6" lg="3">
-        <CWidgetDropdown
-          color="gradient-danger"
-          header="9.823"
-          text="Members online"
-          footerSlot={
-            <ChartBarSimple
-              className="mt-3 mx-3"
-              style={{ height: '70px' }}
-              backgroundColor="rgb(250, 152, 152)"
-              label="Members"
-              labels="months"
-            />
-          }
-        >
-          <CDropdown>
-            <CDropdownToggle caret className="text-white" color="transparent">
-              <CIcon name="cil-audio-spectrum" />
-            </CDropdownToggle>
-            <CDropdownMenu className="pt-0" placement="bottom-end">
-              <CDropdownItem>Action</CDropdownItem>
-              <CDropdownItem>Another action</CDropdownItem>
-              <CDropdownItem>Something else here...</CDropdownItem>
-              <CDropdownItem disabled>Disabled action</CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown>
-        </CWidgetDropdown>
+        <CForm name="textarea" method="post" onSubmit={handleSubmit} encType="multipart/form-data">
+          <CWidgetDropdown
+            color="gradient-danger"
+            header="Paste Text"
+            text="Just Ctrl C + Ctrl V"
+            footerSlot={
+              <div className="c-chart-wrapper mt-3 mx-3">
+
+                {/* <ChartBarSimple
+                  className="mt-3 mx-3"
+                  style={{ height: '70px' }}
+                  backgroundColor="rgb(250, 152, 152)"
+                  label="Members"
+                  labels="months"
+                /> */}
+                <CInputGroup
+                  className="mb-3">
+                  <CTextarea
+                    name="plainText"
+                    id="plainText"
+                    rows="2"
+                    placeholder="Content..."
+                    onChange={handleChange}
+                  />
+                  <CInputGroupAppend>
+                    <CInputGroupText>
+                      <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                    </CInputGroupText>
+                  </CInputGroupAppend>
+                </CInputGroup>
+              </div>
+            }
+          >
+            <div className="btn">📝</div>
+
+            {/* <CDropdown>
+                    <CDropdownToggle caret className="text-white" color="transparent">
+                      <CIcon name="cil-audio-spectrum" />
+                    </CDropdownToggle>
+                    <CDropdownMenu className="pt-0" placement="bottom-end">
+                      <CDropdownItem>Action</CDropdownItem>
+                      <CDropdownItem>Another action</CDropdownItem>
+                      <CDropdownItem>Something else here...</CDropdownItem>
+                      <CDropdownItem disabled>Disabled action</CDropdownItem>
+                    </CDropdownMenu>
+                  </CDropdown> */}
+          </CWidgetDropdown>
+        </CForm>
       </CCol>
-
-    </CRow>
-
+    </CRow >
   )
 }
 
