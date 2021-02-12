@@ -1,11 +1,13 @@
 import { getExpertAPIResponse } from '../../utils/expert-ai-request';
 import { getDateTimeInFormat } from '../../utils/datetime-manipulation';
+import { getGoogleAuthClient } from '../../utils/google-client';
+import { google } from 'googleapis';
 
-const getSummarizedOutput = async (req, res) => {
+const getAnalyzedOutput = async (req, res) => {
     try {
         let text = req.body.text;
         let response = await getExpertAPIResponse(text);
-        res.status(200).json({ 'message': response.data.mainSentences });
+        res.status(200).json({ 'message': response.data });
     } catch (e) {
         res.status(500).json({ 'message': `Error! \n` + e });
     }
@@ -14,11 +16,18 @@ const getSummarizedOutput = async (req, res) => {
 const getEventsFromText = async (req, res) => {
     try {
         let text = req.body.text;
+        let token = JSON.parse(req.body.token);
+
+        const oAuth2Client = getGoogleAuthClient();
+        oAuth2Client.setCredentials(token);
+        const calendar = google.calendar({ version: 'v3', oAuth2Client });
+
         let response = await getExpertAPIResponse(text);
+
         let entities = response.data.entities;
         let dates = entities.filter((entity) => entity.type === 'DAT');
         let times = entities.filter((entity) => entity.type === 'HOU');
-        let summary = entities.filter((entity) => entity.type === 'EVN')[0].lemma;
+        let summary = entities.filter((entity) => entity.type === 'EVN' || entity.type === 'ORG' || entity.type === 'NPR')[0].lemma;
         let location = entities.filter((entity) => entity.type === 'GEO')[0].lemma;
 
         let endDate = dates[0].lemma;
@@ -45,16 +54,28 @@ const getEventsFromText = async (req, res) => {
             'reminders': {
                 'useDefault': false,
                 'overrides': [
-                  {'method': 'email', 'minutes': 24 * 60},
-                  {'method': 'popup', 'minutes': 10},
+                  { 'method': 'email', 'minutes': 24 * 60 },
+                  { 'method': 'popup', 'minutes': 10 },
                 ],
             },
         };
 
-        res.status(200).json({ 'message': event });
+        calendar.events.insert({
+            auth: oAuth2Client,
+            calendarId: 'primary',
+            resource: event,
+          }, function(err, e) {
+            if (err) {
+                res.status(500).json({ 'message': `Error! \n` + err });
+            }
+            event = { ...event, 'link': e.data.htmlLink };
+            res.status(200).json({ 'message': event });
+        });
+
     } catch (e) {
+        console.log(e);
         res.status(500).json({ 'message': `Error! \n` + e });
     }
 }
 
-export { getSummarizedOutput, getEventsFromText };
+export { getAnalyzedOutput, getEventsFromText };

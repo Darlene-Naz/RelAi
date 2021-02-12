@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getSummarizedOutput, getEventsFromText } from '../../controllers/v1/text.controller';
+import { getAnalyzedOutput, getEventsFromText } from '../../controllers/v1/text.controller';
 
 const textRouter = Router()
 
-textRouter.route('/summarize').post(getSummarizedOutput);
+textRouter.route('/analyze').post(getAnalyzedOutput);
 textRouter.route('/events').post(getEventsFromText);
 
 export default textRouter;
