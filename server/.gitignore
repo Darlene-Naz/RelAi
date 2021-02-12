@@ -4,3 +4,4 @@ __pycache__
 uploads-test/
 constants.py
 credentials.json
+.vscode
