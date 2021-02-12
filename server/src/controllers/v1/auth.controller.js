@@ -1,9 +1,6 @@
-import { google } from 'googleapis';
-import * as fs from 'fs';
 import { getGoogleAuthClient } from '../../utils/google-client';
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
-const TOKEN_PATH = 'token.json';
 
 function authorize(oAuth2Client) {
     const authUrl = oAuth2Client.generateAuthUrl({
@@ -24,6 +21,16 @@ const getAuthLink = (req, res) => {
     }
 }
 
+const returnAuthCode = (req, res) => {
+    try {
+        const code = req.query.code;
+        res.status(200).send(`<h1>Hello User!</h1><p>Your requested Access Code is: ${code}`);
+    } catch (err) {
+        res.status(500).send({ 'message': err });
+    }
+
+}
+
 const getAuthToken = (req, res) => {
     try {
         const code = req.body.access_code;
@@ -40,4 +47,4 @@ const getAuthToken = (req, res) => {
 
 }
 
-export { getAuthLink, getAuthToken };
+export { getAuthLink, returnAuthCode, getAuthToken };
