@@ -3,6 +3,7 @@ import os
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import sys
+import shutil
 from constants import HOUNDIFY_CLIENT_ID, HOUNDIFY_CLIENT_KEY
 
 path = sys.argv[1]
@@ -11,8 +12,9 @@ r = sr.Recognizer()
 
 sound = AudioSegment.from_wav(path)  
 chunks = split_on_silence(sound,
-    min_silence_len = 55500,
-    silence_thresh = sound.dBFS-20,
+    min_silence_len = 500,
+    silence_thresh = sound.dBFS-14,
+    keep_silence=500,
 )
 
 FOLDER_NAME = 'src/audio-chunks'
@@ -35,4 +37,6 @@ for i, audio_chunk in enumerate(chunks, start=1):
             text = f'{text.capitalize()}. '
             whole_text += text
 
-    print(whole_text)
+shutil.rmtree('src/audio-chunks')
+
+print(whole_text)
