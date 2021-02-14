@@ -1,6 +1,7 @@
 import CIcon from '@coreui/icons-react';
 import axios from 'axios'
 import Highlighter from "react-highlight-words";
+import Editor from './Editor'
 import { CCard, CFade, CCardBody, CCardFooter, CCardHeader, CLink, CTextarea, CCol, CButton, CButtonGroup, CRow, CCollapse, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react';
 import React, { useState } from 'react';
 
@@ -9,7 +10,8 @@ function WidgetTextEditor(props) {
     const [ showCard, setShowCard ] = useState(true)
     const [ changedData, updateData ] = useState(props.text)
     const [ analysedData, showAnalysis ] = useState({
-        showSummary: false
+        showSummary: false,
+
     })
     function showUpdatedData(e) {
         const { value } = e.target;
@@ -52,7 +54,7 @@ function WidgetTextEditor(props) {
                                     <CIcon className="my-0" name="cil-cloud-download" />
                                 </CDropdownToggle>
                                 <CDropdownMenu className="pt-0" placement="bottom-end">
-                                    <CDropdownItem>PDF</CDropdownItem>
+                                    <CDropdownItem>.pdf</CDropdownItem>
                                     <CDropdownItem>.txt</CDropdownItem>
                                     <CDropdownItem>.doc</CDropdownItem>
                                 </CDropdownMenu>
@@ -78,6 +80,7 @@ function WidgetTextEditor(props) {
                 </CCardHeader>
                 <CCollapse show={collapsed}>
                     <CCardBody>
+                        <Editor />
                         {
                             (!analysedData.showSummary) ?
                                 <CTextarea
@@ -90,12 +93,13 @@ function WidgetTextEditor(props) {
                                 /> :
                                 <Highlighter
                                     highlightClassName="YourHighlightClass"
-                                    searchWords={analysedData.message.mainSentences.map(value => value.value)}
+                                    searchWords={analysedData.message.mainPhrases.map(value => {
+                                        return value.value.replace('___', '−')
+                                    })}
                                     autoEscape={true}
                                     textToHighlight={changedData}
                                 />
                         }
-
                     </CCardBody>
                 </CCollapse>
                 <CCardFooter>

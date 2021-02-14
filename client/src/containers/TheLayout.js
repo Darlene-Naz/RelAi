@@ -1,23 +1,25 @@
-import React from 'react'
+import React from 'react';
+import ExpertChatbot from 'src/views/widgets/ExpertChatbot';
 import {
   TheContent,
   TheSidebar,
   TheFooter,
   TheHeader
-} from './index'
+} from './index';
 
 const TheLayout = () => {
 
   return (
     <div className="c-app c-default-layout">
-      <TheSidebar/>
+      <TheSidebar />
       <div className="c-wrapper">
-        <TheHeader/>
+        <TheHeader />
         <div className="c-body">
-          <TheContent/>
+          <TheContent />
         </div>
-        <TheFooter/>
+        <TheFooter />
       </div>
+      <ExpertChatbot />
     </div>
   )
 }
