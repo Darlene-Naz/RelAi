@@ -106,7 +106,7 @@ const WidgetsDropdown = (props) => {
                     <CInput disabled placeholder={inputData.textFile.name} />
                     <CInputGroupAppend>
                       <CInputGroupText>
-                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                        <CButton style={{ border: 0 }} type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
                       </CInputGroupText>
                     </CInputGroupAppend>
                   </CInputGroup>
