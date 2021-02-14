@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from '../../utils/multer-file';
-import { convertAudioToText, convertTextFileToText } from '../../controllers/v1/convert.controller';
+import { convertAudioToText, convertTextFileToText, convertVideoToText } from '../../controllers/v1/convert.controller';
 
 const convertRouter = Router();
 
@@ -12,5 +12,8 @@ convertRouter
     .route('/textfile-to-text')
     .post(multer.single('file'), convertTextFileToText);
 
-export default convertRouter;
+convertRouter
+    .route('/videofile-to-text')
+    .post(multer.single('file'), convertVideoToText);    
 
+export default convertRouter;
