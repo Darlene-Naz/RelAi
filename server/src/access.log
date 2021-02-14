@@ -244,3 +244,4 @@
 ::1 - - [14/Feb/2021:13:44:50 +0000] "POST /api/v1/events/create-event HTTP/1.1" 200 432 "-" "PostmanRuntime/7.26.8"
 ::1 - - [14/Feb/2021:13:44:53 +0000] "POST /api/v1/text/get-events HTTP/1.1" 404 162 "-" "PostmanRuntime/7.26.8"
 ::1 - - [14/Feb/2021:13:44:59 +0000] "POST /api/v1/events/get-events HTTP/1.1" 200 3208 "-" "PostmanRuntime/7.26.8"
+::1 - - [14/Feb/2021:19:14:02 +0000] "GET /api/v1/auth/get-auth-link HTTP/1.1" 200 315 "-" "PostmanRuntime/7.26.8"
