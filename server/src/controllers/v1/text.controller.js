@@ -73,9 +73,34 @@ const getEventsFromText = async (req, res) => {
         });
 
     } catch (e) {
-        console.log(e);
         res.status(500).json({ 'message': `Error! \n` + e });
     }
 }
 
-export { getAnalyzedOutput, getEventsFromText };
+const returnEvents = (req, res) => {
+    try {
+        let token = JSON.parse(req.body.token);
+
+        const oAuth2Client = getGoogleAuthClient();
+        oAuth2Client.setCredentials(token);
+        const calendar = google.calendar({ version: 'v3', oAuth2Client });
+
+        calendar.events.list({
+            auth: oAuth2Client,
+            calendarId: 'primary',
+            timeMin: (new Date()).toISOString(),
+            maxResults: 10,
+            singleEvents: true,
+            orderBy: 'startTime',
+        }, (err, response) => {
+            if (err) res.send(500).status({ 'message': `Error! \n` + err });
+            const events = response.data.items;
+            res.status(200).send({ 'message': events });
+        });
+
+    } catch(err) {
+        res.send(500).status({ 'message': `Error! \n` + err })
+    }
+}
+
+export { getAnalyzedOutput, getEventsFromText, returnEvents };
