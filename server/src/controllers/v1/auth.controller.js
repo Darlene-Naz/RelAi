@@ -28,7 +28,6 @@ const returnAuthCode = (req, res) => {
     } catch (err) {
         res.status(500).send({ 'message': err });
     }
-
 }
 
 const getAuthToken = (req, res) => {
@@ -44,7 +43,6 @@ const getAuthToken = (req, res) => {
     } catch (err) {
         res.status(500).send({ 'message': err });
     }
-
 }
 
 export { getAuthLink, returnAuthCode, getAuthToken };

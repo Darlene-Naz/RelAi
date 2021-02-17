@@ -9,6 +9,6 @@ const router = Router();
 router.use('/auth', authRouter);
 router.use('/text', textRouter);
 router.use('/convert', convertRouter);
-router.use('/events', eventRouter);
+router.use('/event', eventRouter);
 
 export default router;
