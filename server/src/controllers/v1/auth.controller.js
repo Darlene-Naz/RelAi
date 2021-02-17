@@ -15,7 +15,7 @@ const getAuthLink = (req, res) => {
     try {
         const oAuth2Client = getGoogleAuthClient();
         const authURL = authorize(oAuth2Client);
-        res.status(200).send({ 'message': `Auth URL: ${authURL}` });
+        res.status(200).send({ 'message': authURL });
     } catch (err) {
         res.status(500).send({ 'message': err });
     }
