@@ -2,7 +2,7 @@ import CIcon from '@coreui/icons-react';
 import { CInput, CLink } from '@coreui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
-import ChatBot from 'react-simple-chatbot';
+import ChatBot, { Loading } from 'react-simple-chatbot';
 
 function ChatBotAuth(props) {
     const [ hideCall, setHideCall ] = useState(false)
@@ -46,23 +46,24 @@ function ChatBotEvents(props) {
     if (!hideCall) {
         console.log(props.previousStep.value)
         axios.post(
-            'http://localhost:8000/api/v1/events/create-event',
+            'http://localhost:8000/api/v1/event/check',
             {
                 'text': props.previousStep.value,
-                'token': {
+                'token': JSON.stringify({
                     'access_token': localStorage.getItem('access_token'),
                     'refresh_token': localStorage.getItem('refresh_token'),
                     'scope': localStorage.getItem('scope'),
                     'token_type': localStorage.getItem('token_type'),
                     'expiry_date': localStorage.getItem('expiry_date')
-                }
+                })
             },
             {}
         ).then(res => {
             console.log(res.status)
             // if (res.status === '500') return props.onFinished({ message: "Sorry, some error occurred", error: true })
             // props.onFinished({ message: res.data.message, error: false })
-            setValue(res.data.message)
+            console.log(res.data.message)
+            setValue(JSON.stringify(res.data.message))
             props.triggerNextStep()
         }).catch(e => {
             console.log(e);
@@ -72,7 +73,7 @@ function ChatBotEvents(props) {
         })
         setHideCall(true)
     }
-    return (value || '')
+    return (hideCall ? value : <Loading />)
 }
 
 function ExpertChatbot() {
@@ -137,7 +138,7 @@ function ExpertChatbot() {
                         component: <ChatBotEvents />,
                         asMessage: true,
                         waitAction: true,
-                        trigger: '9'
+                        trigger: '7'
                     },
                     {
                         id: '9',

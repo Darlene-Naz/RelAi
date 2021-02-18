@@ -1,20 +1,29 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 
-const _nav =  [
+const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     badge: {
       color: 'info',
       text: 'NEW',
     }
+  }, {
+    _tag: 'CSidebarNavTitle',
+    _children: [ 'Task Views' ]
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Calendar',
+    to: '/task-view/calendar',
+    icon: 'cil-calendar',
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Theme']
+    _children: [ 'Theme' ]
   },
   {
     _tag: 'CSidebarNavItem',
@@ -30,7 +39,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Components']
+    _children: [ 'Components' ]
   },
   {
     _tag: 'CSidebarNavDropdown',
@@ -224,7 +233,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Extras'],
+    _children: [ 'Extras' ],
   },
   {
     _tag: 'CSidebarNavDropdown',
@@ -271,7 +280,7 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavTitle',
-    _children: ['Labels']
+    _children: [ 'Labels' ]
   },
   {
     _tag: 'CSidebarNavItem',
