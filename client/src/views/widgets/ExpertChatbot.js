@@ -1,5 +1,5 @@
 import CIcon from '@coreui/icons-react';
-import { CInput, CLink } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CInput, CLink } from '@coreui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
 import ChatBot, { Loading } from 'react-simple-chatbot';
@@ -40,8 +40,11 @@ function ChatBotAuth(props) {
 }
 
 function ChatBotEvents(props) {
+    const [ accordion, setAccordion ] = useState(1)
+    const [ loading, setLoading ] = useState(false)
     const [ hideCall, setHideCall ] = useState(false)
     const [ value, setValue ] = useState('')
+
 
     if (!hideCall) {
         console.log(props.previousStep.value)
@@ -60,20 +63,54 @@ function ChatBotEvents(props) {
             {}
         ).then(res => {
             console.log(res.status)
-            // if (res.status === '500') return props.onFinished({ message: "Sorry, some error occurred", error: true })
-            // props.onFinished({ message: res.data.message, error: false })
             console.log(res.data.message)
-            setValue(JSON.stringify(res.data.message))
+            // setValue(JSON.stringify(res.data.message))
             props.triggerNextStep()
+            setLoading(true)
         }).catch(e => {
             console.log(e);
             // props.onFinished({ message: "Sorry, some error occurred", error: true })
             setValue('Sorry, some error occurred')
             props.triggerNextStep({ value: "Sorry, some error occurred" })
+            setLoading(true)
         })
         setHideCall(true)
     }
-    return (hideCall ? value : <Loading />)
+    return (
+        loading ? value !== '' ? value : <CCol>
+            <CCard accentColor="success">
+                {/* {props.steps[ '2' ].value} */}
+                <CCardHeader>
+                    Here's what you requested
+                        </CCardHeader>
+                <CCardBody>
+                    <div id="accordion">
+                        {/* {res.data.message} */}
+                        <CCard className="mb-0">
+                            <CCardHeader id="headingOne">
+                                <CButton
+                                    block
+                                    color="link"
+                                    className="text-left m-0 p-0"
+                                    onClick={() => setAccordion(accordion === 0 ? null : 0)}
+                                >
+                                    <h5 className="m-0 p-0">Collapsible Group Item #1</h5>
+                                </CButton>
+                            </CCardHeader>
+                            <CCollapse show={accordion === 0}>
+                                <CCardBody>
+                                    1. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non
+                                    cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
+                                    on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
+                                    beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven''t heard of them accusamus labore sustainable VHS.
+                                        </CCardBody>
+                            </CCollapse>
+                        </CCard>
+                    </div>
+                </CCardBody>
+            </CCard>
+        </CCol> : <Loading />)
 }
 
 function ExpertChatbot() {
@@ -136,7 +173,6 @@ function ExpertChatbot() {
                     {
                         id: '8',
                         component: <ChatBotEvents />,
-                        asMessage: true,
                         waitAction: true,
                         trigger: '7'
                     },
