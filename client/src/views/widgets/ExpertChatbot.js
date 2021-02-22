@@ -1,5 +1,5 @@
 import CIcon from '@coreui/icons-react';
-import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CInput, CLink } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CInput, CLink, CNavLink } from '@coreui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
 import ChatBot, { Loading } from 'react-simple-chatbot';
@@ -43,7 +43,7 @@ function ChatBotEvents(props) {
     const [ accordion, setAccordion ] = useState(1)
     const [ loading, setLoading ] = useState(false)
     const [ hideCall, setHideCall ] = useState(false)
-    const [ value, setValue ] = useState('')
+    const [ value, setValue ] = useState({})
 
 
     if (!hideCall) {
@@ -64,20 +64,20 @@ function ChatBotEvents(props) {
         ).then(res => {
             console.log(res.status)
             console.log(res.data.message)
-            // setValue(JSON.stringify(res.data.message))
+            setValue(res.data.message)
             props.triggerNextStep()
             setLoading(true)
         }).catch(e => {
             console.log(e);
             // props.onFinished({ message: "Sorry, some error occurred", error: true })
-            setValue('Sorry, some error occurred')
+            setValue({ error: 'Sorry, some error occurred' })
             props.triggerNextStep({ value: "Sorry, some error occurred" })
             setLoading(true)
         })
         setHideCall(true)
     }
     return (
-        loading ? value !== '' ? value : <CCol>
+        loading ? value.error !== undefined ? value : <CCol>
             <CCard accentColor="success">
                 {/* {props.steps[ '2' ].value} */}
                 <CCardHeader>
@@ -85,28 +85,27 @@ function ChatBotEvents(props) {
                         </CCardHeader>
                 <CCardBody>
                     <div id="accordion">
-                        {/* {res.data.message} */}
-                        <CCard className="mb-0">
-                            <CCardHeader id="headingOne">
-                                <CButton
-                                    block
-                                    color="link"
-                                    className="text-left m-0 p-0"
-                                    onClick={() => setAccordion(accordion === 0 ? null : 0)}
-                                >
-                                    <h5 className="m-0 p-0">Collapsible Group Item #1</h5>
-                                </CButton>
-                            </CCardHeader>
-                            <CCollapse show={accordion === 0}>
-                                <CCardBody>
-                                    1. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non
-                                    cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
-                                    on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                                    beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven''t heard of them accusamus labore sustainable VHS.
-                                        </CCardBody>
-                            </CCollapse>
-                        </CCard>
+                        {value.map((ele, index) =>
+                            <CCard className="mb-0">
+                                <CCardHeader id={'heading' + index.toString()}>
+                                    <CButton
+                                        block
+                                        color="link"
+                                        className="text-left m-0 p-0"
+                                        onClick={() => setAccordion(accordion === index ? null : index)}
+                                    >
+                                        <h5 className="m-0 p-0">{ele.summary}</h5>
+                                    </CButton>
+                                </CCardHeader>
+                                <CCollapse show={accordion === index}>
+                                    <CCardBody>
+                                        Start:{new Date(ele.start.dateTime).toString()} <br />
+                                    End:{new Date(ele.end.dateTime).toString()}<br />
+                                    Location:{ele.location}<br />
+                                        <CNavLink target='_blank' href={ele.htmlLink}>Click Me</CNavLink>
+                                    </CCardBody>
+                                </CCollapse>
+                            </CCard>)}
                     </div>
                 </CCardBody>
             </CCard>
