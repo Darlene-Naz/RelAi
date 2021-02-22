@@ -149,7 +149,7 @@ const WidgetsDropdown = (props) => {
                     <CInput disabled placeholder={inputData.audioFile.name} />
                     <CInputGroupAppend>
                       <CInputGroupText>
-                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                        <CButton style={{ border: 0 }} type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
                       </CInputGroupText>
                     </CInputGroupAppend>
                   </CInputGroup>
@@ -187,8 +187,7 @@ const WidgetsDropdown = (props) => {
               header="Video"
               text="Upload any meet..."
               footerSlot={
-                <div className="mt-3">
-
+                <div className="c-chart-wrapper mt-3">
                   <ChartLineSimple
                     style={{ height: '70px' }}
                     backgroundColor="rgba(255,255,255,.2)"
@@ -198,15 +197,17 @@ const WidgetsDropdown = (props) => {
                     label="Members"
                     labels="months"
                   />
-                  <CInputGroup
-                    className={(inputData.videoFile === "") ? "c-chart-wrapper mb-3 mx-3 d-none" : "c-chart-wrapper mb-3 mx-3"}>
-                    <CInput disabled id="name" placeholder={inputData.plainText.name} />
-                    <CInputGroupAppend>
-                      <CInputGroupText>
-                        <CButton type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
-                      </CInputGroupText>
-                    </CInputGroupAppend>
-                  </CInputGroup>
+                  <div className="mx-3">
+                    <CInputGroup
+                      className={(inputData.videoFile === "") ? "mb-3 d-none" : "mb-3"}>
+                      <CInput disabled placeholder={inputData.videoFile.name} />
+                      <CInputGroupAppend>
+                        <CInputGroupText>
+                          <CButton style={{ border: 0 }} type="submit" className="p-0 m-0"><CIcon name="cil-cloud-upload" className="p-0 m-0" /></CButton>
+                        </CInputGroupText>
+                      </CInputGroupAppend>
+                    </CInputGroup>
+                  </div>
                 </div>
               }
             >

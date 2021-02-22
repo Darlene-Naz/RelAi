@@ -93,7 +93,7 @@ function WidgetTextEditor(props) {
                                 /> :
                                 <Highlighter
                                     highlightClassName="YourHighlightClass"
-                                    searchWords={analysedData.message.mainPhrases.map(value => {
+                                    searchWords={analysedData.message.mainSentences.map(value => {
                                         return value.value.replace('___', '−')
                                     })}
                                     autoEscape={true}

@@ -1,0 +1,13 @@
+
+
+Blockchain is the technology the underpins digital currency (Bitcoin, Litecoin, Ethereum, and the like). The tech allows digital information to be distributed, but not copied. That means each individual piece of data can only have one owner.
+You may hear it described as a “digital ledger” stored in a distributed network. Blockgeeks has a good analogy to help understand how Blockchain works:
+“Picture a spreadsheet that is duplicated thousands of times across a network of computers. Then imagine that this network is designed to regularly update this spreadsheet and you have a basic understanding of the blockchain.”
+The information is constantly reconciled into the database, which is stored in multiple locations and updated instantly. That means the records are public and verifiable. Since there’s no central location, it harder to hack since the info exists simultaneously in millions of places.
+Why Is It Called Blockchain?
+A block is record of a new transactions. When a block is completed, it’s added to the chain. Bitcoin owners have the private password (a complex key) to an address on the chain, which is where their ownership is recorded. Crypto-currency proponents like the distributed storage without a middle man — you don’t need a bank to verify the transfer of money or take a cut of the transaction.
+Image for post
+William Mougayar, author of The Business Blockchain, described it this way:
+Imagine two entities (eg banks) that need to update their own user account balances when there is a request to transfer money from one customer to another. They need to spend a tremendous (and costly) amount of time and effort for coordination, synchronization, messaging and checking to ensure that each transaction happens exactly as it should. Typically, the money being transferred is held by the originator until it can be confirmed that it was received by the recipient. With the blockchain, a single ledger of transaction entries that both parties have access to can simplify the coordination and validation efforts because there is always a single version of records, not two disparate databases.
+
+Blockchain is going to be used for more than just currency and transactions. To give you an idea of how seriously it’s been studied and adopted, IBM has 1,000 employees working on blockchain-powered projects. They’ve also set aside $200 million for development. Financial and tech firms invested an estimate $1.4 billion dollars in blockchain in 2016 with an increase to $2.1 billion dollars in 2018.

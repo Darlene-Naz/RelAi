@@ -1,8 +1,8 @@
 import CIcon from '@coreui/icons-react';
-import { CInput, CLink } from '@coreui/react';
+import { CButton, CCard, CCardBody, CCardHeader, CCol, CCollapse, CInput, CLink, CNavLink } from '@coreui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
-import ChatBot from 'react-simple-chatbot';
+import ChatBot, { Loading } from 'react-simple-chatbot';
 
 function ChatBotAuth(props) {
     const [ hideCall, setHideCall ] = useState(false)
@@ -40,39 +40,76 @@ function ChatBotAuth(props) {
 }
 
 function ChatBotEvents(props) {
+    const [ accordion, setAccordion ] = useState(1)
+    const [ loading, setLoading ] = useState(false)
     const [ hideCall, setHideCall ] = useState(false)
-    const [ value, setValue ] = useState('')
+    const [ value, setValue ] = useState({})
+
 
     if (!hideCall) {
         console.log(props.previousStep.value)
         axios.post(
-            'http://localhost:8000/api/v1/events/create-event',
+            'http://localhost:8000/api/v1/event/check',
             {
                 'text': props.previousStep.value,
-                'token': {
+                'token': JSON.stringify({
                     'access_token': localStorage.getItem('access_token'),
                     'refresh_token': localStorage.getItem('refresh_token'),
                     'scope': localStorage.getItem('scope'),
                     'token_type': localStorage.getItem('token_type'),
                     'expiry_date': localStorage.getItem('expiry_date')
-                }
+                })
             },
             {}
         ).then(res => {
             console.log(res.status)
-            // if (res.status === '500') return props.onFinished({ message: "Sorry, some error occurred", error: true })
-            // props.onFinished({ message: res.data.message, error: false })
+            console.log(res.data.message)
             setValue(res.data.message)
             props.triggerNextStep()
+            setLoading(true)
         }).catch(e => {
             console.log(e);
             // props.onFinished({ message: "Sorry, some error occurred", error: true })
-            setValue('Sorry, some error occurred')
+            setValue({ error: 'Sorry, some error occurred' })
             props.triggerNextStep({ value: "Sorry, some error occurred" })
+            setLoading(true)
         })
         setHideCall(true)
     }
-    return (value || '')
+    return (
+        loading ? value.error !== undefined ? value : <CCol>
+            <CCard accentColor="success">
+                {/* {props.steps[ '2' ].value} */}
+                <CCardHeader>
+                    Here's what you requested
+                        </CCardHeader>
+                <CCardBody>
+                    <div id="accordion">
+                        {value.map((ele, index) =>
+                            <CCard className="mb-0">
+                                <CCardHeader id={'heading' + index.toString()}>
+                                    <CButton
+                                        block
+                                        color="link"
+                                        className="text-left m-0 p-0"
+                                        onClick={() => setAccordion(accordion === index ? null : index)}
+                                    >
+                                        <h5 className="m-0 p-0">{ele.summary}</h5>
+                                    </CButton>
+                                </CCardHeader>
+                                <CCollapse show={accordion === index}>
+                                    <CCardBody>
+                                        Start:{new Date(ele.start.dateTime).toString()} <br />
+                                    End:{new Date(ele.end.dateTime).toString()}<br />
+                                    Location:{ele.location}<br />
+                                        <CNavLink target='_blank' href={ele.htmlLink}>Click Me</CNavLink>
+                                    </CCardBody>
+                                </CCollapse>
+                            </CCard>)}
+                    </div>
+                </CCardBody>
+            </CCard>
+        </CCol> : <Loading />)
 }
 
 function ExpertChatbot() {
@@ -135,9 +172,8 @@ function ExpertChatbot() {
                     {
                         id: '8',
                         component: <ChatBotEvents />,
-                        asMessage: true,
                         waitAction: true,
-                        trigger: '9'
+                        trigger: '7'
                     },
                     {
                         id: '9',
