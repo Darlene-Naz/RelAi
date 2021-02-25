@@ -26,7 +26,8 @@ class RecordPage extends React.Component {
             recordVideo: null,
             src: null,
             uploadSuccess: null,
-            uploading: false
+            uploading: false,
+            startBtn: false,
         };
 
         this.requestUserMedia = this.requestUserMedia.bind(this);
@@ -52,17 +53,19 @@ class RecordPage extends React.Component {
     }
 
     startRecord() {
+        this.setState({
+            'startBtn': true,
+        });
         captureUserMedia((stream) => {
             this.state.recordVideo = RecordRTC(stream, { type: 'video/webm' });
             this.state.recordVideo.startRecording();
         });
-
-        setTimeout(() => {
-            this.stopRecord();
-        }, 4000);
     }
 
     stopRecord() {
+        this.setState({
+            'startBtn': false,
+        });
         this.state.recordVideo.stopRecording(() => {
             let params = {
                 type: 'video/webm',
@@ -73,15 +76,15 @@ class RecordPage extends React.Component {
             this.setState({ uploading: true });
 
             S3Upload(params)
-                .then((success) => {
-                    console.log('enter then statement')
-                    if (success) {
-                        console.log(success)
-                        this.setState({ uploadSuccess: true, uploading: false });
-                    }
-                }, (error) => {
-                    alert(error, 'error occurred. check your aws settings and try again.')
-                })
+                // .then((success) => {
+                //     console.log('enter then statement')
+                //     if (success) {
+                //         console.log(success)
+                //         this.setState({ uploadSuccess: true, uploading: false });
+                //     }
+                // }, (error) => {
+                //     alert(error, 'error occurred. check your aws settings and try again.')
+                // })
         });
     }
 
@@ -109,8 +112,7 @@ class RecordPage extends React.Component {
                     this.state.uploading ?
                         <div>Uploading...</div> : null
                 }
-                <CButton block color="danger" onClick={this.startRecord}>Start Record</CButton>
-
+                <CButton block color="danger" onClick={this.state.startBtn ? this.stopRecord : this.startRecord}>{this.state.startBtn ? 'Stop Recording' : 'Start Recording' }</CButton>
             </CCol >
         )
     }

@@ -25,6 +25,7 @@ class App extends Component {
   render() {
     return (
       <HashRouter>
+        <React.Suspense fallback={loading}>
         <Router>
           <Switch>
             <Route exact path="/login" name="Login Page" render={props => <Login {...props} />} />
@@ -33,7 +34,8 @@ class App extends Component {
             <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} />
             <Route path="/" name="Home" render={props => <TheLayout {...props} />} />
           </Switch>
-        </Router>
+          </Router>
+        </React.Suspense>
       </HashRouter>
     );
   }
