@@ -56,7 +56,7 @@ Our inspiration came from trying out different virtual meeting platforms ever si
 </ul>
 
 ## Demo video
-To watch the app demo on YouTube <a href="https://www.youtube.com/watch?v=cLu8BUyH17w">Click here</a>.
+To watch the app demo on YouTube <a target="_blank" href="https://www.youtube.com/watch?v=cLu8BUyH17w">Click here</a>.
 
 ## License
 
