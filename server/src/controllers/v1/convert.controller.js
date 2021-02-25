@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 
 const processAudioToText = async (path) => {
-    let python = spawn('python', [ AUDIO_TO_TEXT_PYTHON_SCRIPT, path ]);
+    let python = spawn('python3', [ AUDIO_TO_TEXT_PYTHON_SCRIPT, path ]);
 
     let data = '';
     for await (const chunk of python.stdout) {
@@ -53,7 +53,7 @@ const convertTextFileToText = async (req, res) => {
 const convertVideoToText = async (req, res) => {
     try {
         const PATH = req.file.path;
-        let converter = spawn('python', [ VIDEO_TO_AUDIO_PYTHON_SCRIPT, String(PATH) ]);
+        let converter = spawn('python3', [ VIDEO_TO_AUDIO_PYTHON_SCRIPT, String(PATH) ]);
 
         let intermediate = '';
         for await (const chunk of converter.stdout) {
