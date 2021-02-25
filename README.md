@@ -59,4 +59,4 @@ Our inspiration came from trying out different virtual meeting platforms ever si
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[MIT License Link](https://github.com/sherwyn11/Skyplay-NN/blob/master/LICENSE)
+[MIT License Link](https://github.com/Darlene-Naz/RelAi/blob/master/LICENSE)
