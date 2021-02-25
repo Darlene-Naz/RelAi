@@ -55,6 +55,9 @@ Our inspiration came from trying out different virtual meeting platforms ever si
 <li>Deploy the app for public usage.</li>
 </ul>
 
+## Demo video
+To watch the app demo on YouTube <a href="https://www.youtube.com/watch?v=cLu8BUyH17w">Click here</a>.
+
 ## License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
