@@ -1,4 +1,4 @@
-# Client App
+# Client
 
 ## Getting started
 1. Install Dependencies
@@ -10,3 +10,4 @@ npm i
 ```bash
 npm start
 ```
+3. Open <a>http://localhost:3000</a> in the browser.
