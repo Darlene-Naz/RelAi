@@ -12,7 +12,7 @@ function Webcam(props) {
         refVideo.current.play();
     }, [props.src])
 
-    return <video ref={refVideo} {...props} />
+    return <div><video ref={refVideo} {...props} /><video ref={refVideo} {...props} /></div>
 
 }
 
