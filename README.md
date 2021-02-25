@@ -54,3 +54,9 @@ Our inspiration came from trying out different virtual meeting platforms ever si
 <li>Use better Speech-to-text API's like <b>Google's Speech-to-text</b> API to enhance performance.</li>
 <li>Deploy the app for public usage.</li>
 </ul>
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[MIT License Link](https://github.com/sherwyn11/Skyplay-NN/blob/master/LICENSE)
