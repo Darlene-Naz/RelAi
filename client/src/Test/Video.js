@@ -2,13 +2,24 @@ import React from 'react';
 import { captureUserMedia, S3Upload } from './AppUtils';
 import Webcam from './Webcam';
 import RecordRTC from 'recordrtc';
+import { CButton, CCol, CContainer, CRow } from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import user from './Icons/user2.jpeg'
+import camerastop from './Icons/camera-stop.svg'
+import microphone from './Icons/microphone.svg'
+import microphonestop from './Icons/microphone-stop.svg'
+import share from './Icons/share.svg'
+import hangup from './Icons/hang-up.svg'
+import fullscreen from './Icons/fullscreen.svg'
+import minimize from './Icons/minimize.svg'
+import ringtone from './Sounds/ringtone.mp3'
 // import { Modal } from 'react-bootstrap';
 
 const hasGetUserMedia = !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
     navigator.mozGetUserMedia || navigator.msGetUserMedia);
 
 class RecordPage extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -76,13 +87,31 @@ class RecordPage extends React.Component {
 
     render() {
         return (
-            <div>
+            <CCol>
                 {/* <Modal show={this.state.uploadSuccess}><Modal.Body>Upload success!</Modal.Body></Modal> */}
-                <div><Webcam src={this.state.src} /></div>
-                {this.state.uploading ?
-                    <div>Uploading...</div> : null}
-                <div><button onClick={this.startRecord}>Start Record</button></div>
-            </div>
+                <CRow>
+                    <CCol col="12" sm="6" md="6" xl className="mr-3">
+                        <Webcam src={this.state.src} />
+                    </CCol>
+                    <CCol col="12" sm="6" md="6" xl className="mr-3 mb-1 justify-content-center">
+                        <div style={{
+                            width: "100%",
+                            height: "100%",
+                            background: "black",
+                            zIndex: "99",
+                            alignItems: "center",
+                        }}>
+                            <CIcon className="align-self-center" src={user} />
+                        </div>
+                    </CCol>
+                </CRow>
+                {
+                    this.state.uploading ?
+                        <div>Uploading...</div> : null
+                }
+                <CButton block color="danger" onClick={this.startRecord}>Start Record</CButton>
+
+            </CCol >
         )
     }
 }
