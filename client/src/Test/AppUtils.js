@@ -1,7 +1,7 @@
 import { invokeSaveAsDialog } from "recordrtc";
 
 export function captureUserMedia(callback) {
-    var params = { audio: true, video: true };
+    var params = { audio: false, video: true };
 
     navigator.getUserMedia(params, callback, (error) => {
         alert(JSON.stringify(error));
@@ -26,7 +26,7 @@ function createCORSRequest(method, url) {
     if (xhr.withCredentials != null) {
         xhr.open(method, url, true);
     } else if (typeof XDomainRequest !== "undefined") {
-        // xhr = new XDomainRequest();
+        xhr = window.XDomainRequest();
         xhr = null;
         xhr.open(method, url);
     } else {

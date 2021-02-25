@@ -27,7 +27,7 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({ type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <h2>Expert-AI</h2>
+        <h3>RelAi</h3>
         <CIcon
           className="c-sidebar-brand-minimized"
           name="sygnet"
