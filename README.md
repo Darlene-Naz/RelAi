@@ -1,4 +1,6 @@
-# RelAi
+# RelAi <img src="https://cdn.iconscout.com/icon/free/png-256/meeting-1543488-1305981.png" height="40px" width="35px">
+
+![gif](assets/intro.gif)
 
 ## Inspiration
 Our inspiration came from trying out different virtual meeting platforms ever since most of the world went remote due to Covid-19 and noting down unique features each one hand and what we could add to make meetings a lot more easier. We discovered that instead of having someone watch a whole meet recording, they could choose to read it or just get an idea of what they missed out or if someone is busy with other activities, they can just use voice commands and run meetings.
